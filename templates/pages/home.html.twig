@@ -9,4 +9,23 @@
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce posuere, quam vitae venenatis laoreet, erat mi venenatis orci, sit amet rhoncus nunc eros at arcu. Vivamus interdum tempus luctus. Morbi rhoncus accumsan rutrum. Pellentesque felis justo, consectetur vel fringilla eget, convallis accumsan augue. 
         Etiam id libero massa.</p>
     </div>
+
+    <div class="container">
+        <h2>Les derniers biens</h2>
+        <div class="row flex">
+            {% for property in propertises %}
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                 <a href="{{ path('property.show', {id: property.id, slug: property.slug}) }}">{{ property.title }}</a>       
+                            </h5>
+                            <p class="card-text">{{ property.city }} ({{ property.postalCode }})
+                            <div class="text-primary" style="font-weight:bold; font-size: 2 rem">{{ property.formattedPrice}} €</div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

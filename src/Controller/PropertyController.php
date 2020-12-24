@@ -30,10 +30,12 @@ class PropertyController extends AbstractController
         /*$property = new Property();
         $property->setTitle('Mon premier bien')
         ->setPrice(200000)
+        ->setRooms(4)
         ->setBedrooms(3)
         ->setDescription('Une petite description')
         ->setSurface(60)
         ->setFloor(4)
+        ->setHeat(1)
         ->setCity('Montpellier')
         ->setAddress('15 boulevard Gambetta')
         ->setPostalCode('34000');
@@ -41,10 +43,22 @@ class PropertyController extends AbstractController
         $em->persist($property);
         $em->flush();*/
 
-        $repository = $this->repository->find(1);
-        dump($repository);
+        /*$repository = $this->repository->find(1);
+        dump($repository);*/
         return $this->render('property/index.html.twig',[
             'current_menu' => 'propertises'
+        ]);
+    }
+
+    /**
+     * @Route("/biens/{slug}-{id}", name="property.show", requirements={"slug":"[a-z0-9\-]*"})
+     * @return Response
+     */
+    public function show(Property $property): Response
+    {
+        return $this->render('property/show.html.twig',[
+            'property' => $property,
+            'current_menu' => 'properties'
         ]);
     }
 }

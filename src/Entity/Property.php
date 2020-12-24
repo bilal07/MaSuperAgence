@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PropertyRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Cocur\Slugify\Slugify;
 
 /**
  * @ORM\Entity(repositoryClass=PropertyRepository::class)
@@ -76,6 +77,16 @@ class Property
      */
     private $created_at;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $rooms;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $heat;
+
     public function __construct()
     {
         $this->created_at = new \DateTime();
@@ -95,6 +106,11 @@ class Property
         $this->title = $title;
 
         return $this;
+    }
+    public function getSlug():string
+    {
+        $slugify = new Slugify();
+        return $slugify->slugify($this->title);
     }
 
     public function getDescription(): ?string
@@ -148,6 +164,10 @@ class Property
     public function getPrice(): ?int
     {
         return $this->price;
+    }
+    public function getFormattedPrice(): string
+    {
+        return number_format($this->price, 0, '', ' ');
     }
 
     public function setPrice(int $price): self
@@ -215,5 +235,33 @@ class Property
         $this->created_at = $created_at;
 
         return $this;
+    }
+
+    public function getRooms(): ?int
+    {
+        return $this->rooms;
+    }
+
+    public function setRooms(int $rooms): self
+    {
+        $this->rooms = $rooms;
+
+        return $this;
+    }
+
+    public function getHeat(): ?int
+    {
+        return $this->heat;
+    }
+
+    public function setHeat(int $heat): self
+    {
+        $this->heat = $heat;
+
+        return $this;
+    }
+    public function getHeatType(): string
+    {
+        return self::HEAT[$this->heat];
     }
 }
