@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Property;
+use App\Entity\PropertySearch;
+use App\Form\PropertySearchType;
 use App\Repository\PropertyRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,14 +31,19 @@ class PropertyController extends AbstractController
      */
     public function index(PaginatorInterface $paginator, Request $request): Response
     {
+        $search = new PropertySearch();
+        $form = $this->createForm(PropertySearchType::class, $search);
+        $form->handleRequest($request);
+
         $properties = $paginator->paginate(
-            $this->repository->findAllVisible(), /* query NOT result */
+            $this->repository->findAllVisibleQuery($search), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             12 /*limit per page*/
         );
         return $this->render('property/index.html.twig',[
             'current_menu' => 'propertises',
-            'properties' => $properties
+            'properties' => $properties,
+            'form' => $form->createView()
         ]);
     }
 
