@@ -2,13 +2,15 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Option;
+
 use App\Entity\Property;
 use App\Form\PropertyType;
 use App\Repository\PropertyRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -74,6 +76,7 @@ class AdminPropertyController extends AbstractController
         $form = $this->createForm(PropertyType::class, $property);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            
             $this->em->flush();
             $this->addFlash('success', 'Bien modifié avec succès');
             return $this->redirectToRoute('admin.property.index');
